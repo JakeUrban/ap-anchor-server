@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ap-anchor-server"
+version = "0.1.0"
+description = ""
+authors = ["Jake Urban <jake@stellar.org>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "*"
+requests = "*"
+kafka-python = "*"
+django-environ = "*"
+watchdog = "*"
+djangorestframework = "*"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

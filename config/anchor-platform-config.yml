@@ -1,0 +1,25 @@
+stellar:
+  anchor:
+    data-access:
+      type: data-spring-jdbc
+      settings: data-spring-jdbc-sqlite
+app-config:
+  app:
+    assets: file:/config/assets-test.json
+  sep1:
+    enabled: true
+    stellarFile: file:/config/stellar.toml
+  sep12:
+    enabled: true
+    customerIntegrationEndpoint: http://host.docker.internal:8081
+  sep31:
+    enabled: true
+    feeIntegrationEndPoint: http://host.docker.internal:8081
+  event:
+    enabled: true
+    publisherType: kafka
+  kafka.publisher:
+    bootstrapServer: host.docker.internal:29092
+    useSingleQueue: true
+    eventTypeToQueue:
+      all: all-events

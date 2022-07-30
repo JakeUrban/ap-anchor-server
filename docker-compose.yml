@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  db:
+    build: .
+    volumes:
+      - .:/code
+    command: poetry run python manage.py migrate
+  anchor-server:
+    container_name: anchor-server
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - "8081:8081"
+    command: poetry run watchmedo auto-restart --recursive --pattern="*.py;*.env" --directory="." python manage.py runserver -- 0.0.0.0:8081
+    depends_on:
+      db:
+        condition: service_completed_successfully
+  anchor-platform:
+    container_name: anchor-platform
+    image: stellar/anchor-platform:latest
+    command: --sep-server
+    environment:
+      - STELLAR_ANCHOR_CONFIG=file:/config/anchor-platform-config.yml
+      - LOG_APPENDER=console_appender
+    volumes:
+      - ./config:/config
+    depends_on:
+      - db
+      - kafka
+    ports:
+      - "8080:8080"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://host.docker.internal:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  stream-events:
+    container_name: stream-events
+    build: .
+    volumes:
+      - .:/code
+    depends_on:
+      db:
+        condition: service_completed_successfully
+    command: poetry run watchmedo auto-restart --recursive --pattern="*.py;*.env" --directory="." python manage.py streamevents

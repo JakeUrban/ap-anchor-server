@@ -1,0 +1,22 @@
+ACCOUNTS = []
+VERSION = "0.1.0"
+NETWORK_PASSPHRASE = "Test SDF Network ; September 2015"
+SIGNING_KEY = "GCHLHDBOKG2JWMJQBTLSL5XG6NO7ESXI2TAQKZXCXWXB5WI2X6W233PR"
+
+WEB_AUTH_ENDPOINT = "http://localhost:8080/auth"
+KYC_SERVER = "http://localhost:8080/sep12"
+DIRECT_PAYMENT_SERVER = "http://localhost:8080/sep31"
+ANCHOR_QUOTE_SERVER = "http://localhost:8080/sep38"
+
+[[CURRENCIES]]
+code = "SRT"
+issuer = "GCDNJUBQSX7AJWLJACMJ7I4BC3Z47BQUTMHEICZLE6MU4KQBRYG5JY6B"
+status = "test"
+is_asset_anchored = false
+desc = "Stellar Reference Token (SRT) is an asset issued on testnet and is used as an anchored asset for this reference server for demonstration and testing purposes."
+
+[DOCUMENTATION]
+ORG_NAME = "Stellar Development Foundation"
+ORG_URL = "https://stellar.org"
+ORG_DESCRIPTION = "The Stellar Development Foundation (SDF) is a non-profit organization whose mission is to create equitable access to the global financial system."
+ORG_GITHUB = "stellar"
